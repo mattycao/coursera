@@ -1,0 +1,82 @@
+C to C++:
+1.3 
+	1. use the preprocess less, which is like, define macros:
+		#DEFINE ASE 5
+	2. int is more precise than float. It is true since on most machines int can represent +/- 2 billion integer values. Float usually has 6 significant figures of accruracy when representing integers.
+1.5
+	1. C++ improvements
+		1. some of these are adpoted in modern C
+		2. different libaries most old C libraries still available, with c leading
+		3. inline - replaces code macro -benefit?
+		4. rest of line comments //	
+		5. std::out  :: scope resolution operator
+		6. cout << " something": cout is ostream, and the << is the bit shifter, but if before the << it has the cout(ostream), then the << is overloaded( means it has a new meaning, the other one is = in java)
+		7. initialization or delcaration is interleaved.
+		8. iostream cin >> type safety( implicit type safety)
+		9. declaration can be intermixed after executable.
+		10. use of new
+		11. static_cast<double>, the old C version of (double) is still available but the static_cast( 1 of 4) is more suitable and safety.
+		12. safe casts
+		13. for statement can include delaration initializer
+		14. endl iomanipulator can be palced in an ostream
+1.7 C++ better than C
+ 	1. type safety
+ 	2. more library(reuse)
+ 	3. less reliane on prerocessor(#define golobal constant is not long used)
+ 	4. OO vs imperative
+
+ 	so far,
+ 	inline, const, static_cast<type>, namespaces, iostream, declarations anywhere inluding for statment initialization
+
+ 	5. different between C++(the const double PI = 3.14159) and C (#define PI 3.14159), the C++ create a non-mutable variable PI. It cannot be changed in the scope of this delcaration. But in C, PI here is a macro, and it textually substituted for within the scope of the #define which is normally file scope. 
+1.8 C summary:
+	Call by reference simulated by pointer, means C is only called by copy.
+1.9 C++ swap function:
+	in C++, C++ have overloading and call by reference.
+	C++ overloading:
+		1. signmature matching alogrithm
+		2. the two routines need different types or numbers of parameters
+		3. integer swap() is (int&, int&)
+			double swap() is (double&, double&)
+		4. std::cout is found in <iostream>
+		5. inline can e used when declaring functions to speed them up.
+1.10 Generics
+	1. programming using templates
+	2. C++ template
+	template<class T> // T is a meta variable, in future will be substitute with 
+						// actually type
+	inline void swap(T&d, T&s) {
+		T temp = d;
+		d = s;
+		s = temp;
+	}
+Homework review:
+	1.  char   : 1 byte
+		short  : 2 bytes
+		int    : 4 bytes
+		long   : 4 bytes
+		float  : 4 bytes
+		double : 8 bytes
+	(type) expression can be used to many things including things to which static_cast<type> apply. But also things like
+	unsigned char t[8];
+	double* pd = (double*) t;
+	Here I typecast a pointer to an array, t, to a pointer to a double. This can be useful if you want specify the individual bits in a double (and you know the layout in memory). This form of typecasting is considered unsafe. E.g. your code may work on a little-endian machine but not on a big-endian machine. But even more dangerous is that there is no compiler checking that the array is big enough. If I had written
+	unsigned char t[4];
+	double* pd = (double*) t;
+
+	the code would still compile but now we are running into buffer overflow if we attempt something like
+	*pd = 1.0;
+	The C++ compiler will not allow this typecasting using static_cast. You would have to use reinterpret_cast. In that sense static_cast is safer. It prevents you from making certain types of mistakes.
+	2. macros vs constants
+	#define TEAM_MEMBERS_SIZE 5
+
+	char *teamMembers[TEAM_MEMBERS_SIZE]; // OK
+	#define TEAM_MEMBERS_SIZE "hurr"
+
+	char *teamMembers[TEAM_MEMBERS_SIZE]; // whoops: size of array ‘teamMembers’ has non-integer type
+
+	Because of the (simplified) pipeline Preprocessor -> Compiler -> Linker, macros don't exist at the compiling stage. The preprocessor basically substitutes macro names with corresponding values (i.e. in this case TEAM_MEMBERS_SIZE is being substituted with 5 and "hurr" respectively). Compare that with this one:
+
+	const int TEAM_MEMBERS_SIZE = "hurr"; // gotcha: invalid conversion from ‘const char*’ to ‘int’
+
+	With const you get the error message directly in the error source.
